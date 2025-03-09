@@ -2,17 +2,16 @@ package com.example.demo.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import org.springframework.data.annotation.Id;
 
 import java.util.List;
 
-@Entity
 @Data
-@Table(name = "user")
-public class User {
+@Entity
+@Table(name = "users")
+public class Users {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Column(unique = true, nullable = false)

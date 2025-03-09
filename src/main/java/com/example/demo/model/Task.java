@@ -4,13 +4,15 @@ import com.example.demo.Enum.TaskStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-@Entity
 @Data
 @AllArgsConstructor
+@Entity
 @Table(name = "task")
+@NoArgsConstructor
 public class Task {
 
     @Id
@@ -33,7 +35,7 @@ public class Task {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    private Users user;
 
 
 
