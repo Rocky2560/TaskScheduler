@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Registration</title>
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+          crossorigin="anonymous">
+</head>
+<body>
+
+<!-- create navigation bar ( header) -->
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed"
+                    data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+                    aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span> <span
+                    class="icon-bar"></span> <span class="icon-bar"></span> <span
+                    class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#" th:href="@{auth/registration}">User Registration</a>
+        </div>
+    </div>
+</nav>
+
+<br>
+<br>
+<!-- Create HTML registration form -->
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+
+            <!-- success message -->
+            <div th:if="${param.success}">
+                <div class="alert alert-info">You've successfully registered
+                    to our awesome app!</div>
+            </div>
+
+            <h1>Registration</h1>
+
+            <form th:action="@{/auth/register}" method="post">
+                <div class="form-group">
+                    <label class="control-label" for="username"> Username </label> <input
+                        name="username" id="username" class="form-control" type="text"
+                       required autofocus="autofocus" />
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="email"> Email </label> <input
+                        name="email"  id="email" class="form-control" type="email"
+                        required autofocus="autofocus" />
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="password"> Password </label> <input
+                        name="password" id="password" class="form-control" type="password"
+                         required autofocus="autofocus" />
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-success">Register</button>
+                    <span>Already registered? <a href="/" th:href="@{auth/login}">Login
+								here</a></span>
+                </div>
+            </form>
+            <p th:if="${param.error}">Username already exists!</p>
+            <p th:if="${param.registered}">Registration successful! Please login.</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -12,7 +12,6 @@
 
 </head>
 <body>
-
 <!-- create navigation bar ( header) -->
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
@@ -32,8 +31,12 @@
 <br>
 <br>
 <div class = "container">
+    <div th:if="${message}" class="alert alert-success">
+        <p th:text="${message}"></p>
+    </div>
     <div class = "row">
         <div class = "col-md-6 col-md-offset-3">
+            <p th:if="${param.registered}">Registration successful! Please login now.</p>
 
             <h1> Sign-in </h1>
 <!--            <form th:action="@{/tasks}" method="post">-->
@@ -72,7 +75,7 @@
                 </div>
             </form>
             <div class="form-group">
-						<span>New user? <a href="/" th:href="@{/registration}">Register
+						<span>New user? <a href="/" th:href="@{registration}">Register
 								here</a></span>
             </div>
         </div>
