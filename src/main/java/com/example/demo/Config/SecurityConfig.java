@@ -33,6 +33,32 @@ public class SecurityConfig {
     @Autowired
     private UserDetailService userDetailService;
 
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+                .csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/login", "/register", "/auth/**", "/css/**", "/js/**").permitAll()
+//                        .addFilter(new JwtAuthenticationFilter())
+                        .anyRequest().authenticated()
+                )
+                .formLogin(form -> form
+                        .loginPage("/auth/login") // 👈 Custom login page path
+                        .defaultSuccessUrl("/tasks", true) // 👈 Redirect to /tasks after successful login
+                        .failureUrl("/login?error=true") // 👈 Redirect back on failure
+                        .permitAll()
+                )
+                .logout(logout -> logout
+                        .logoutSuccessUrl("/login?logout=true")
+                        .permitAll()
+                )
+                .addFilterBefore(new JwtAuthenticationFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class)
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+
+        return http.build();
+    }
+
     @Bean
     public AuthenticationManager authenticationManager(PasswordEncoder passwordEncoder) {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();

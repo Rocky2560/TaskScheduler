@@ -14,12 +14,13 @@ public class Users {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    private String email;
+
     @Column(unique = true, nullable = false)
     private String username;
 
     private String password;
 
-    private String email;
 
     @OneToMany(mappedBy = "user" , cascade = CascadeType.ALL)
     private List<Task> tasks;
