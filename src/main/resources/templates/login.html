@@ -40,7 +40,7 @@
 
             <h1> Sign-in </h1>
 <!--            <form th:action="@{/tasks}" method="post">-->
-                <form id="loginForm" method="post">
+                <form th:action="@{/auth/login}" method="post">
 
                 <!-- error message -->
                 <div th:if="${param.error}">
@@ -68,8 +68,9 @@
                 <div class="form-group">
                     <div class="row">
                         <div class="col-sm-6 col-sm-offset-3">
-                            <input type="submit" name="login-submit" id="login-submit"
-                                   class="form-control btn btn-primary" value="Log In" />
+                            <button type="submit" class="form-control btn btn-primary">Login</button>
+<!--                            <input type="submit" name="login-submit"-->
+<!--                                   class="form-control btn btn-primary" value="Log In" />-->
                         </div>
                     </div>
                 </div>
@@ -81,39 +82,39 @@
         </div>
     </div>
 </div>
-<script>
-    document.getElementById('loginForm').addEventListener('submit', function (e) {
-      e.preventDefault();  // Prevent form submission to allow JavaScript processing
+<!--<script>-->
+<!--    document.getElementById('loginForm').addEventListener('submit', function (e) {-->
+<!--      e.preventDefault();  // Prevent form submission to allow JavaScript processing-->
 
-      const username = document.getElementById('username').value;
-      const password = document.getElementById('password').value;
+<!--      const username = document.getElementById('username').value;-->
+<!--      const password = document.getElementById('password').value;-->
 
-      fetch('/auth/login', {  // Ensure this matches your POST endpoint
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-              username: username,
-              password: password
-          })
-      })
-      .then(response => response.json())
-      .then(data => {
-          if (data.token) {
-              localStorage.setItem('token', data.token);  // Save token in local storage
-              alert('Login successful!');
-              window.location.href = data.redirect || '/tasks';  // Use the redirect URL from the response
-          } else {
-              alert('Login failed! Please check your username/password.');
-          }
-      })
-      .catch(error => {
-          alert('Error logging in');
-      });
-  });
+<!--      fetch('/auth/login', {  // Ensure this matches your POST endpoint-->
+<!--          method: 'POST',-->
+<!--          headers: {-->
+<!--              'Content-Type': 'application/json',-->
+<!--          },-->
+<!--          body: JSON.stringify({-->
+<!--              username: username,-->
+<!--              password: password-->
+<!--          })-->
+<!--      })-->
+<!--      .then(response => response.json())-->
+<!--      .then(data => {-->
+<!--          if (data.token) {-->
+<!--              localStorage.setItem('token', data.token);  // Save token in local storage-->
+<!--              alert('Login successful!');-->
+<!--              window.location.href = data.redirect || '/tasks';  // Use the redirect URL from the response-->
+<!--          } else {-->
+<!--              alert('Login failed! Please check your username/password.');-->
+<!--          }-->
+<!--      })-->
+<!--      .catch(error => {-->
+<!--          alert('Error logging in');-->
+<!--      });-->
+<!--  });-->
 
-</script>
+<!--</script>-->
 </body>
 </html>
 

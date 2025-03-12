@@ -3,6 +3,8 @@ package com.example.demo.controller;
 import com.example.demo.JWT.JwtUtil;
 import com.example.demo.Repository.UserRepository;
 import com.example.demo.model.Users;
+import com.example.demo.service.UserDetailService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,6 +40,9 @@ public class LoginController {
     @Autowired
     private JwtUtil jwtUtil;
 
+    @Autowired
+    private UserDetailService userDetailService;
+
     @GetMapping("/auth/login")
     public String login()
     {
@@ -49,45 +55,73 @@ public class LoginController {
         return "registration";
     }
 
-//    @PostMapping("auth/register")
-//    public String register(@RequestParam("username") String username,
-//                           @RequestParam("password") String password,
-//                           @RequestParam("email") String email, RedirectAttributes redirectAttributes) {
-//
-//        if (userRepository.findByUsername(username).isPresent()) {
-//            redirectAttributes.addFlashAttribute("message", "User already registered. Please Login now!");
-//            return "redirect:/auth/login"; // Handle duplicate user case
-//        }
-//
-//        Users user = new Users();
-//        user.setUsername(username);
-//        user.setUsername(email);
-//        user.setPassword(passwordEncoder.encode(password));
-//        userRepository.save(user);
-//        redirectAttributes.addFlashAttribute("message", "User registered Successful. Please Login now!");
-//        return "redirect:/auth/login"; // ✅ Redirect to login after successful registration
-//    }
-    @PostMapping("/auth/login")
-    public ResponseEntity<Map<String, String>> login(@RequestBody Map<String, String> credentials) {
-        String username = credentials.get("username");
-        String password = credentials.get("password");
+    @PostMapping("auth/register")
+    public String register(@RequestParam("username") String username,
+                           @RequestParam("password") String password,
+                           @RequestParam("email") String email, RedirectAttributes redirectAttributes) {
 
-        // Authenticate user
-        if (isAuthenticated(username, password)) {
-            String token = jwtUtil.generateToken(username);
+        if (userRepository.findByUsername(username).isPresent()) {
+            redirectAttributes.addFlashAttribute("message", "User already registered. Please Login now!");
+            return "redirect:/auth/login"; // Handle duplicate user case
+        }
 
-            // Create response with the token
-            Map<String, String> response = new HashMap<>();
-            response.put("token", token);
-            response.put("redirect", "/tasks");  // or any page where you want to redirect
+        Users user = new Users();
+        user.setUsername(username);
+        user.setUsername(email);
+        user.setPassword(passwordEncoder.encode(password));
+        userRepository.save(user);
+        redirectAttributes.addFlashAttribute("message", "User registered Successful. Please Login now!");
+        return "redirect:/auth/login"; // ✅ Redirect to login after successful registration
+    }
 
-            return ResponseEntity.ok(response);
+    @PostMapping("auth/login")
+    public String login(@RequestParam String username,
+                        @RequestParam String password,
+                        Model model,
+                        HttpSession session) {
+        var userOpt = userDetailService.authenticate(username, password);
+        if (userOpt.isPresent()) {
+            Users user = userOpt.get();
+            String token = jwtUtil.generateToken(user.getUsername(), user.getRole());
+            session.setAttribute("token", token);
+            session.setAttribute("username", user.getUsername());
+            session.setAttribute("role", user.getRole());
+            return user.getRole().equals("admin") ? "redirect:/admin/dashboard" : "redirect:/tasks";
         } else {
-            Map<String, String> response = new HashMap<>();
-            response.put("message", "Invalid credentials");
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+            model.addAttribute("message", "Invalid credentials");
+            return "login";
         }
     }
+
+    @GetMapping("/admin/dashboard")
+    public String adminDashboard(HttpSession session, Model model) {
+        if (!"admin".equals(session.getAttribute("role"))) return "redirect:/login";
+        model.addAttribute("username", session.getAttribute("username"));
+        return "admin-dashboard";
+    }
+
+//    @PostMapping("/auth/login")
+//    public ResponseEntity<Map<String, String>> login(@RequestBody Map<String, String> credentials) {
+//        String username = credentials.get("username");
+//        String password = credentials.get("password");
+//
+//
+//        // Authenticate user
+//        if (isAuthenticated(username, password)) {
+//            String token = jwtUtil.generateToken(username);
+//
+//            // Create response with the token
+//            Map<String, String> response = new HashMap<>();
+//            response.put("token", token);
+//            response.put("redirect", "/tasks");  // or any page where you want to redirect
+//
+//            return ResponseEntity.ok(response);
+//        } else {
+//            Map<String, String> response = new HashMap<>();
+//            response.put("message", "Invalid credentials");
+//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+//        }
+//    }
 
     // Simple authentication check (replace this with actual authentication logic)
     private boolean isAuthenticated(String username, String password) {
