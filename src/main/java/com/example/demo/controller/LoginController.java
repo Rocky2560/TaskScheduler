@@ -43,7 +43,7 @@ public class LoginController {
     @Autowired
     private UserDetailService userDetailService;
 
-    @GetMapping("/auth/login")
+    @GetMapping("/login")
     public String login()
     {
         return "login";
@@ -71,22 +71,24 @@ public class LoginController {
         user.setPassword(passwordEncoder.encode(password));
         userRepository.save(user);
         redirectAttributes.addFlashAttribute("message", "User registered Successful. Please Login now!");
-        return "redirect:/auth/login"; // ✅ Redirect to login after successful registration
+        return "redirect:/login"; // ✅ Redirect to login after successful registration
     }
 
-    @PostMapping("auth/login")
+    @PostMapping("login")
     public String login(@RequestParam String username,
                         @RequestParam String password,
                         Model model,
                         HttpSession session) {
         var userOpt = userDetailService.authenticate(username, password);
+        System.out.println("hello");
         if (userOpt.isPresent()) {
             Users user = userOpt.get();
-            String token = jwtUtil.generateToken(user.getUsername(), user.getRole());
-            session.setAttribute("token", token);
+//            String token = jwtUtil.generateToken(user.getUsername(), user.getRole());
+//            session.setAttribute("token", token);
             session.setAttribute("username", user.getUsername());
             session.setAttribute("role", user.getRole());
-            return user.getRole().equals("admin") ? "redirect:/admin/dashboard" : "redirect:/tasks";
+            System.out.println("hello");
+            return user.getRole().equals("user") ? "redirect:/tasks" : "redirect:/tasks";
         } else {
             model.addAttribute("message", "Invalid credentials");
             return "login";
