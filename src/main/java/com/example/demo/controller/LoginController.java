@@ -87,7 +87,7 @@ public class LoginController {
 //            session.setAttribute("token", token);
             session.setAttribute("username", user.getUsername());
             session.setAttribute("role", user.getRole());
-            System.out.println("hello");
+            System.out.println(user.getRole());
             return user.getRole().equals("user") ? "redirect:/tasks" : "redirect:/tasks";
         } else {
             model.addAttribute("message", "Invalid credentials");

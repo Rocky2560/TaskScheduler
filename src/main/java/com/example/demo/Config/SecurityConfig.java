@@ -41,22 +41,20 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/login", "/register", "/auth/**", "/css/**", "/js/**").permitAll()
-//                        .addFilter(new JwtAuthenticationFilter())
-                                .requestMatchers("/tasks").hasAnyRole("user", "ADMIN")
                         .anyRequest().authenticated()
                 )
-//                .formLogin(form -> form
-//                        .loginPage("/login") // 👈 Custom login page path
-////                        .defaultSuccessUrl("/tasks", true) // 👈 Redirect to /tasks after successful login
-//                        .failureUrl("/login?error=true") // 👈 Redirect back on failure
-//                        .permitAll()
-//                )
+                .formLogin(form -> form
+                        .loginPage("/login") // 👈 Custom login page path
+                        .defaultSuccessUrl("/tasks", true) // 👈 Redirect to /tasks after successful login
+                        .failureUrl("/login?error=true") // 👈 Redirect back on failure
+                        .permitAll()
+                );
 //                .logout(logout -> logout
 //                        .logoutSuccessUrl("/login?logout=true")
 //                        .permitAll()
 //                )
 //                .addFilterBefore(new JwtAuthenticationFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class)
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+//                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         return http.build();
     }
