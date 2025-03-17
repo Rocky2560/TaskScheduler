@@ -48,11 +48,13 @@ public class SecurityConfig {
                         .defaultSuccessUrl("/tasks", true) // 👈 Redirect to /tasks after successful login
                         .failureUrl("/login?error=true") // 👈 Redirect back on failure
                         .permitAll()
+                )
+                .logout(logout -> logout
+                        .logoutSuccessUrl("/login?logout=true")
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID")
+                        .permitAll()
                 );
-//                .logout(logout -> logout
-//                        .logoutSuccessUrl("/login?logout=true")
-//                        .permitAll()
-//                )
 //                .addFilterBefore(new JwtAuthenticationFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class)
 //                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
