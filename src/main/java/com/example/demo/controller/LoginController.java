@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -46,12 +47,23 @@ public class LoginController {
     @GetMapping("/login")
     public String login()
     {
-        return "login";
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null && auth.isAuthenticated()
+                && !(auth instanceof AnonymousAuthenticationToken)) {
+            return "redirect:/tasks";
+        }
+        return "login"; // your login view name
     }
 
     @GetMapping("/auth/registration")
     public String register()
     {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null && auth.isAuthenticated()
+                && !(auth instanceof AnonymousAuthenticationToken)) {
+            return "redirect:/tasks";
+        }
         return "registration";
     }
 

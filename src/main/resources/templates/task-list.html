@@ -8,7 +8,17 @@
 <body>
 <div class="container mt-5">
   <h2 class="mb-4">Task Scheduler</h2>
-  <a href="/tasks/new" class="btn btn-primary mb-3">Add New Task</a>
+
+  <!-- Button Row: LEFT and RIGHT aligned with no extra gap -->
+  <div class="row mb-2">
+    <div class="col text-start">
+      <a href="/tasks/new" class="btn btn-primary">Add New Task</a>
+    </div>
+    <div class="col text-end">
+      <a href="/logout" class="btn btn-danger">Logout</a>
+    </div>
+  </div>
+
   <table class="table table-bordered">
     <thead>
     <tr>
