@@ -8,26 +8,27 @@
 <body>
 <div class="container mt-5">
   <h2 class="mb-4">Add / Edit Task</h2>
-  <form action="/tasks/save" method="post" th:object="${task}">
-    <input type="hidden" th:field="*{id}">
+  <form th:action="@{/tasks/save}" method="post" th:object="${task}">
+    <input name="user_id" type="hidden" th:object="${user_id}">
     <div class="mb-3">
       <label>Title:</label>
-      <input type="text" class="form-control" th:field="*{title}" required>
+      <input type="text" name="title" class="form-control" th:field="*{title}" required>
     </div>
     <div class="mb-3">
       <label>Description:</label>
-      <textarea class="form-control" th:field="*{description}" required></textarea>
+      <textarea class="form-control" name="description" th:field="*{description}" required></textarea>
     </div>
     <div class="mb-3">
       <label>Due Date:</label>
-      <input type="datetime-local" class="form-control" th:field="*{dueDate}" required>
+      <input type="datetime-local" name="dueDate" class="form-control" th:field="*{dueDate}" required>
     </div>
     <div class="mb-3">
       <label>Priority:</label>
-      <select class="form-control" th:field="*{priority}">
-        <option value="LOW">Low</option>
-        <option value="MEDIUM">Medium</option>
-        <option value="HIGH">High</option>
+      <select class="form-control" name="status" th:field="*{status}">
+        <option th:each="statusOption : ${T(com.example.demo.Enum.TaskStatus).values()}"
+                th:value="${statusOption}"
+                th:text="${statusOption}">
+        </option>
       </select>
     </div>
     <button type="submit" class="btn btn-success">Save Task</button>

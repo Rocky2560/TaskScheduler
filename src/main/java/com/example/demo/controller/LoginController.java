@@ -47,7 +47,6 @@ public class LoginController {
     @GetMapping("/login")
     public String login()
     {
-
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null && auth.isAuthenticated()
                 && !(auth instanceof AnonymousAuthenticationToken)) {
@@ -56,7 +55,7 @@ public class LoginController {
         return "login"; // your login view name
     }
 
-    @GetMapping("/auth/registration")
+    @GetMapping("/registration")
     public String register()
     {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -79,9 +78,10 @@ public class LoginController {
 
         Users user = new Users();
         user.setUsername(username);
-        user.setUsername(email);
+        user.setEmail(email);
         user.setPassword(passwordEncoder.encode(password));
         userRepository.save(user);
+        System.out.println("hello");
         redirectAttributes.addFlashAttribute("message", "User registered Successful. Please Login now!");
         return "redirect:/login"; // ✅ Redirect to login after successful registration
     }

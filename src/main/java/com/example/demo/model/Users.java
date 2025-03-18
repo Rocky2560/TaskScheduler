@@ -38,4 +38,6 @@ public class Users {
     @OneToMany(mappedBy = "user" , cascade = CascadeType.ALL)
     private List<Task> tasks;
 
+
+
 }

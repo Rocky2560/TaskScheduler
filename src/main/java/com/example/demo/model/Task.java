@@ -25,10 +25,8 @@ public class Task {
 
     private LocalDateTime dueDate;
 
-    private String priority;
+//    private String status;
 
-    @Column(nullable = false)
-    private String name;
 
     @Enumerated(EnumType.STRING)
     private TaskStatus status;
@@ -36,6 +34,16 @@ public class Task {
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private Users user;
+//
+//    public void setUser(Users user)
+//    {
+//        this.user = user;
+//    }
+
+    public void setUser(Users user)
+    {
+        this.user = user;
+    }
 
 
 

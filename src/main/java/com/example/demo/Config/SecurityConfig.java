@@ -43,7 +43,7 @@ public class SecurityConfig {
 
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/login", "/register", "/auth/**", "/css/**", "/js/**").permitAll()
+                        .requestMatchers("/login", "/registration", "/auth/**", "/css/**", "/js/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
@@ -62,9 +62,6 @@ public class SecurityConfig {
                         .maxSessionsPreventsLogin(true) // Block new login if session already exists
                         .sessionRegistry(sessionRegistry()) // You'll need to define this bean
                 );
-//                .addFilterBefore(new JwtAuthenticationFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class)
-//                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-
         return http.build();
     }
 
