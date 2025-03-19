@@ -9,7 +9,7 @@
 <div class="container mt-5">
   <h2 class="mb-4">Add / Edit Task</h2>
   <form th:action="@{/tasks/save}" method="post" th:object="${task}">
-    <input name="user_id" type="hidden" th:object="${user_id}">
+    <input name="user_id" type="hidden" th:value="${user_id}">
     <div class="mb-3">
       <label>Title:</label>
       <input type="text" name="title" class="form-control" th:field="*{title}" required>

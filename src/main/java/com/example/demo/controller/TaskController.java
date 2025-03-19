@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,6 +33,9 @@ public class TaskController {
     public String getAllTasks(Model model, Principal principal) {
 
         List<Task> tasks = taskService.getAllTasks();
+        if (tasks == null) {
+            tasks = new ArrayList<>(); // or use Collections.emptyList();
+        }
         model.addAttribute("tasks", tasks);
         return "task-list";
     }
@@ -44,16 +48,18 @@ public class TaskController {
         Task task = new Task();
         task.setUser(user);
 
-        model.addAttribute("task", task); // Use singular naming for clarity
+        model.addAttribute("task", task);
+        model.addAttribute("user_id", user.getId());// Use singular naming for clarity
         return "task-form";
     }
 
 
     @PostMapping("/save")
-    public String saveTask(@ModelAttribute Task task, @RequestParam("user_id") String userId) {
-        Long id = Long.parseLong(userId);
-        System.out.println(id);
-        Users user = userRepository.findById(id).orElseThrow();
+    public String saveTask(@ModelAttribute Task task, @RequestParam("user_id") Long userId) {
+        Long id = userId.longValue();
+        System.out.println(userId);
+
+        Users user = userRepository.findById(userId).orElseThrow();
         task.setUser(user);
         System.out.println(task);
         taskService.saveTask(task);

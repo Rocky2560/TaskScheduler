@@ -35,7 +35,7 @@
       <td th:text="${task.title}"></td>
       <td th:text="${task.description}"></td>
       <td th:text="${task.dueDate}"></td>
-      <td th:text="${task.priority}"></td>
+<!--      <td th:text="${task.user}"></td>-->
       <td th:text="${task.status}"></td>
       <td>
         <a th:href="@{/tasks/edit/{id}(id=${task.id})}" class="btn btn-warning btn-sm">Edit</a>
