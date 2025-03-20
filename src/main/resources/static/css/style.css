@@ -1,0 +1,107 @@
+  .priority-low {
+        background-color: #e0f7fa; /* Light Cyan */
+        color: #00695c;
+        font-weight: normal;
+    }
+
+    .priority-medium {
+        background-color: #fff3cd; /* Light Yellow */
+        color: #856404;
+        font-weight: bold;
+    }
+
+    .priority-high {
+        background-color: #f8d7da; /* Light Red/Pink */
+        color: #721c24;
+        font-weight: bold;
+        border-left: 5px solid red;
+    }
+
+    /* Container for buttons */
+    .button-container {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    /* Edit button styling */
+    .edit-button {
+      padding: 8px 16px;
+      font-size: 14px;
+      font-weight: 500;
+      background-color: #6c757d; /* Bootstrap Secondary */
+      color: white;
+      border: none;
+      border-radius: 6px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .edit-button:hover {
+      background-color: #5a6268;
+      color: white;
+    }
+
+    /* Modal dialog styling */
+    .modal-dialog {
+      max-width: 600px;
+      margin: 1.75rem auto;
+    }
+
+    /* Modal content */
+    .modal-content {
+      border-radius: 10px;
+      padding: 20px;
+      background-color: #fff;
+    }
+
+    /* Modal form labels */
+    .modal-content label {
+      font-weight: bold;
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    /* Form controls */
+    .modal-content .form-control,
+    .modal-content select {
+      width: 100%;
+      padding: 10px;
+      font-size: 14px;
+      margin-bottom: 15px;
+      border: 1px solid #ced4da;
+      border-radius: 6px;
+    }
+
+    /* Submit button (optional if you add one) */
+    .modal-content .submit-btn {
+      background-color: #198754; /* Bootstrap success */
+      color: white;
+      padding: 10px 20px;
+      border-radius: 6px;
+      border: none;
+      font-size: 15px;
+      cursor: pointer;
+    }
+
+    .modal-content .submit-btn:hover {
+      background-color: #157347;
+    }
+
+     .card-header {
+        background-color: #f8f9fa; /* Light gray background */
+        color: #343a40;            /* Dark text color */
+        font-size: 1.25rem;        /* Slightly larger font */
+        font-weight: 600;          /* Semi-bold */
+        padding: 0.75rem 1rem;     /* Standard padding */
+        border-bottom: 1px solid #dee2e6; /* Subtle border */
+        display: flex;
+        align-items: center;
+      }
+
+      .card-header i {
+        color: #0d6efd; /* Bootstrap Primary color for icon */
+        margin-right: 0.5rem;
+        font-size: 1.2rem;
+      }

@@ -6,10 +6,14 @@ import com.example.demo.model.Task;
 import com.example.demo.model.Users;
 import com.example.demo.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
@@ -76,5 +80,32 @@ public class TaskController {
     public String deleteTask(@PathVariable Long id) {
         taskService.deleteTask(id);
         return "redirect:/tasks";
+    }
+
+
+    @GetMapping("editPost/{id}")
+    public ResponseEntity<Task> editPost(@PathVariable("id") int id, Model model)
+    {
+        Task post = taskService.getPostById(id);
+        System.out.println(post);
+        return ResponseEntity.ok(post);
+    }
+
+    @PostMapping("editPost")
+    public String updateExpense(@RequestParam("id") int id, @RequestParam("title") String title, @RequestParam("description")
+                                String description, @RequestParam("category") String category,
+                                @RequestParam("image1") MultipartFile image,
+                                RedirectAttributes redirectAttributes) throws IOException {
+
+        try {
+            Task posts = taskService.getPostById(id);
+//            posts.setTitle(title);
+//            posts.setDescription(description);
+//            posts.setCategory(category);
+            taskService.saveorUpdate(posts);
+            return "redirect:/api/postDetails";
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

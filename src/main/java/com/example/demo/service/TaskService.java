@@ -5,7 +5,13 @@ import com.example.demo.Repository.TaskRepository;
 import com.example.demo.model.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -44,5 +50,15 @@ public class TaskService {
         return taskRepository.findByDueDateBeforeAndStatus(LocalDateTime.now(), TaskStatus.PENDING);
     }
 
+    public Task getPostById(int id)
+    {
+        return taskRepository.findById((long)id)
+                .orElseThrow(() -> new RuntimeException("Task not found with id: " + id));
+    }
+
+    public void saveorUpdate(Task posts)
+    {
+        taskRepository.save(posts);
+    }
 
 }
