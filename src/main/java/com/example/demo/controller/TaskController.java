@@ -15,6 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -72,7 +73,7 @@ public class TaskController {
 
     @GetMapping("/edit/{id}")
     public String editTask(@PathVariable Long id, Model model) {
-        model.addAttribute("task", taskService.getTaskById(id).orElse(null));
+        model.addAttribute("task", taskService.getTaskById(id));
         return "task-form";
     }
 
@@ -83,27 +84,31 @@ public class TaskController {
     }
 
 
-    @GetMapping("editPost/{id}")
-    public ResponseEntity<Task> editPost(@PathVariable("id") int id, Model model)
+    @GetMapping("editTask/{id}")
+    public  ResponseEntity<Task>  editTask(@PathVariable("id") int id, Model model)
     {
-        Task post = taskService.getPostById(id);
-        System.out.println(post);
-        return ResponseEntity.ok(post);
+        Task task = taskService.getTaskById(id);
+        if (task == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(task);
     }
 
-    @PostMapping("editPost")
-    public String updateExpense(@RequestParam("id") int id, @RequestParam("title") String title, @RequestParam("description")
-                                String description, @RequestParam("category") String category,
-                                @RequestParam("image1") MultipartFile image,
+    @PostMapping("editTask")
+    public String updateTask(@RequestParam("user_id") int id, @RequestParam("title") String title, @RequestParam("description")
+                                String description, @RequestParam("dueDate") LocalDateTime dueDate, @RequestParam("priority")
+                                 String priority,
                                 RedirectAttributes redirectAttributes) throws IOException {
 
         try {
-            Task posts = taskService.getPostById(id);
-//            posts.setTitle(title);
-//            posts.setDescription(description);
-//            posts.setCategory(category);
-            taskService.saveorUpdate(posts);
-            return "redirect:/api/postDetails";
+            System.out.println(id);
+            Task task = taskService.getTaskById(id);
+            task.setTitle(title);
+            task.setDescription(description);
+            task.setDueDate(dueDate);
+            task.setPriority(priority);
+            taskService.saveorUpdate(task);
+            return "redirect:/tasks";
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
