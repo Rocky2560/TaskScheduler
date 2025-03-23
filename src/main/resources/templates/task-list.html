@@ -17,6 +17,11 @@
 <div class="container mt-5">
   <h2 class="mb-4">Task Scheduler</h2>
 
+  <div class = "container">
+    <div th:if="${message}" class="alert alert-success">
+      <p th:text="${message}"></p>
+    </div>
+  </div>
   <!-- Button Row: LEFT and RIGHT aligned with no extra gap -->
   <div class="row mb-2">
     <div class="col text-start">
@@ -47,14 +52,14 @@
       <td th:text="${task.title}"></td>
       <td th:text="${task.description}"></td>
       <td th:text="${task.dueDate}"></td>
-      <td th:text="${task.priority}">
+      <td class="btn btn-success btn-sm" th:text="${task.priority}">
       </td>
       <td th:text="${task.status}"></td>
       <td>
 <!--        <a th:href="@{/tasks/edit/{id}(id=${task.id})}" class="btn btn-warning btn-sm">Edit</a>-->
         <!-- Edit Button -->
 
-        <a class="btn btn-secondary edit-button test" th:data-id="${task.id}" data-bs-toggle="modal" data-bs-target="#editPostModal">Edit</a>
+        <a class="btn btn-secondary btn-sm test" th:data-id="${task.id}" data-bs-toggle="modal" data-bs-target="#editPostModal">Edit</a>
         <!--                                        <a class="btn btn-secondary edit-button test" data-id="${post.id}"  data-bs-toggle="modal" data-bs-target="#editPostModal">Edit</a>-->
         <!-- Modal -->
         <div class="modal fade" id="editPostModal" tabindex="-1" aria-labelledby="editPostModalLabel" aria-hidden="true">
@@ -66,23 +71,23 @@
               </div>
               <!-- Form Inside Modal -->
               <form class="card mb-4" th:action="@{/tasks/editTask}"  method="post">
-                <input name="user_id" id="user_id" type="hidden" th:value="${user_id}">
+                <input name="user_id" id="user_id" type="hidden">
                 <div class="mb-3">
                   <label>Title:</label>
-                  <input type="text" name="title" id="title" class="form-control" th:text="*{title}" required>
+                  <input type="text" name="title" id="title" class="form-control" required>
                 </div>
 <!--           -->
                 <div class="mb-3">
                   <label>Description:</label>
-                  <textarea class="form-control" id="description" name="description" th:text="*{description}" required></textarea>
+                  <textarea class="form-control" id="description" name="description" required></textarea>
                 </div>
                 <div class="mb-3">
                   <label>Due Date:</label>
-                  <input type="datetime-local" id="dueDate" name="dueDate" class="form-control" th:text="*{dueDate}" required>
+                  <input type="datetime-local" id="dueDate" name="dueDate" class="form-control" required>
                 </div>
                 <div class="mb-3">
                   <label>Priority:</label>
-                  <select name ="priority" class="form-control" th:value="*{priority}">
+                  <select name ="priority" class="form-control">
                     <option value="LOW">Low</option>
                     <option value="MEDIUM">Medium</option>
                     <option value="HIGH">High</option>
@@ -99,7 +104,7 @@
           </div>
         </div>
 
-<!--        <a th:href="@{/tasks/delete/{id}(id=${task.id})}" class="btn btn-danger btn-sm">Delete</a>-->
+        <a th:href="@{/tasks/delete/{id}(id=${task.id})}" class="btn btn-danger btn-sm">Delete</a>
       </td>
     </tr>
     </tbody>

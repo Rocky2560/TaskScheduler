@@ -60,7 +60,7 @@ public class TaskController {
 
 
     @PostMapping("/save")
-    public String saveTask(@ModelAttribute Task task, @RequestParam("user_id") Long userId) {
+    public String saveTask(@ModelAttribute Task task, @RequestParam("user_id") Long userId, RedirectAttributes redirectAttributes) {
         Long id = userId.longValue();
         System.out.println(userId);
 
@@ -68,6 +68,7 @@ public class TaskController {
         task.setUser(user);
         System.out.println(task);
         taskService.saveTask(task);
+        redirectAttributes.addFlashAttribute("message", "Your tasks has been Added");
         return "redirect:/tasks";
     }
 
@@ -75,12 +76,6 @@ public class TaskController {
     public String editTask(@PathVariable Long id, Model model) {
         model.addAttribute("task", taskService.getTaskById(id));
         return "task-form";
-    }
-
-    @GetMapping("/delete/{id}")
-    public String deleteTask(@PathVariable Long id) {
-        taskService.deleteTask(id);
-        return "redirect:/tasks";
     }
 
 
@@ -108,9 +103,20 @@ public class TaskController {
             task.setDueDate(dueDate);
             task.setPriority(priority);
             taskService.saveorUpdate(task);
+            redirectAttributes.addFlashAttribute("message", "Your tasks has been Updated");
             return "redirect:/tasks";
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
+
+    //Getting the id for the edit process
+    @GetMapping("/delete/{id}")
+    public String deleteTask(@PathVariable ("id") long id, RedirectAttributes redirectAttributes)
+    {
+        taskService.deleteTask(id);
+        redirectAttributes.addFlashAttribute("message", "Your tasks has been deleted");
+        return "redirect:/tasks";
+    }
+
 }
