@@ -5,6 +5,7 @@ import com.example.demo.Repository.UserRepository;
 import com.example.demo.model.Task;
 import com.example.demo.model.Users;
 import com.example.demo.service.TaskService;
+import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -29,19 +30,23 @@ public class TaskController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private TaskNotificationScheduler taskNotificationScheduler;
+
     public TaskController(TaskService taskService)
     {
         this.taskService = taskService;
     }
 
     @GetMapping
-    public String getAllTasks(Model model, Principal principal) {
+    public String getAllTasks(Model model, Principal principal) throws MessagingException {
 
         List<Task> tasks = taskService.getAllTasks();
         if (tasks == null) {
             tasks = new ArrayList<>(); // or use Collections.emptyList();
         }
         model.addAttribute("tasks", tasks);
+        taskNotificationScheduler.notifyPendingTasks();
         return "task-list";
     }
 

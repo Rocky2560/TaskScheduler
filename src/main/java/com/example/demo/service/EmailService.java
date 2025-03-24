@@ -4,6 +4,7 @@ import com.example.demo.model.Task;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.core.io.ClassPathResource;
@@ -22,20 +23,13 @@ public class EmailService {
     @Autowired
     private TemplateEngine templateEngine;
 
-    public void sendTaskHtmlEmail(String to, String name, String tasks) throws MessagingException {
-        Context context = new Context();
-        context.setVariable("name", name);
-        context.setVariable("tasks", tasks);
 
-        String htmlBody = templateEngine.process("email-template.html", context);
-
-        MimeMessage message = mailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message, true);
-
-        helper.setTo(to);
-        helper.setSubject("Daily Pending Task Notification");
-        helper.setText(htmlBody, true); // true = is HTML
-
+    public void sendEmail(String to, String subject, String body) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("sudipmanandhar2560@gmail.com");
+        message.setTo(to);
+        message.setSubject(subject);
+        message.setText(body);
         mailSender.send(message);
     }
 }
