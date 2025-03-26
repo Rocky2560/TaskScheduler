@@ -87,13 +87,20 @@
                 </div>
                 <div class="mb-3">
                   <label>Priority:</label>
-                  <select name ="priority" class="form-control">
+                  <select id="priority" name ="priority" class="form-control">
                     <option value="LOW">Low</option>
                     <option value="MEDIUM">Medium</option>
                     <option value="HIGH">High</option>
                   </select>
                 </div>
-                <input type="hidden" name="status" value="PENDING">
+                <div class="mb-3">
+                  <label>Status:</label>
+                  <select id="status" name ="status" class="form-control">
+                    <option value="PENDING">PENDING</option>
+<!--                    <option value="OVERDUE">OVERDUE</option>-->
+                    <option value="COMPLETED">COMPLETED</option>
+                  </select>
+                </div>
                 <div class="d-flex justify-content-end">
                   <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Close</button>
                   <button type="submit" class="btn btn-primary">Save Changes</button>
@@ -125,6 +132,7 @@
              $('#description').val(data.description);
              $('#priority').val(data.priority);
              $('#dueDate').val(data.dueDate);
+             $('#status').val(data.status);
          },
          error: function () {
              alert('Failed to fetch post data. Please try again.');

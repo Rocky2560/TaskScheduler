@@ -5,6 +5,7 @@ import com.example.demo.Repository.UserRepository;
 import com.example.demo.model.Task;
 import com.example.demo.model.Users;
 import com.example.demo.service.TaskService;
+import com.example.demo.service.UserService;
 import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +31,9 @@ public class TaskController {
     @Autowired
     private UserRepository userRepository;
 
+//    @Autowired
+//    private UserService userService;
+
     @Autowired
     private TaskNotificationScheduler taskNotificationScheduler;
 
@@ -38,15 +42,23 @@ public class TaskController {
         this.taskService = taskService;
     }
 
+
     @GetMapping
     public String getAllTasks(Model model, Principal principal) throws MessagingException {
 
+//        String username = principal.getName(); // Get username from logged-in user
+//
+//        Optional<Users> optionalUser = userService.findByUsername(username);
+//        if (optionalUser.isPresent()) {
+//            Long userId = optionalUser.get().getId(); // Get the user ID
+//            List<Task> tasks = taskService.getTasksByUserId(userId);
+//            model.addAttribute("tasks", tasks != null ? tasks : new ArrayList<>());
+//        } else {
+//            model.addAttribute("tasks", new ArrayList<>());
+//        }
         List<Task> tasks = taskService.getAllTasks();
-        if (tasks == null) {
-            tasks = new ArrayList<>(); // or use Collections.emptyList();
-        }
         model.addAttribute("tasks", tasks);
-        taskNotificationScheduler.notifyPendingTasks();
+//        taskNotificationScheduler.notifyPendingTasks();
         return "task-list";
     }
 
@@ -97,7 +109,7 @@ public class TaskController {
     @PostMapping("editTask")
     public String updateTask(@RequestParam("user_id") int id, @RequestParam("title") String title, @RequestParam("description")
                                 String description, @RequestParam("dueDate") LocalDateTime dueDate, @RequestParam("priority")
-                                 String priority,
+                                 String priority, @RequestParam("status") String status,
                                 RedirectAttributes redirectAttributes) throws IOException {
 
         try {
@@ -107,6 +119,7 @@ public class TaskController {
             task.setDescription(description);
             task.setDueDate(dueDate);
             task.setPriority(priority);
+            task.setStatus(TaskStatus.valueOf(status));
             taskService.saveorUpdate(task);
             redirectAttributes.addFlashAttribute("message", "Your tasks has been Updated");
             return "redirect:/tasks";

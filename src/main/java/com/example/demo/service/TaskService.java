@@ -23,7 +23,21 @@ public class TaskService {
         return taskRepository.findAll();
     }
 
+//    public List<Task> getTasksByUser(String username)
+//    {
+//        return taskRepository.findByUser(username);
+//    }
+
     public Task getTaskById(long id)
+    {
+        return taskRepository.findById(id).get();
+    }
+
+    public List<Task> getTasksByUserId(Long userId) {
+        return taskRepository.findByUser_Id(userId);
+    }
+
+    public Task getTaskByUser(long id)
     {
         return taskRepository.findById(id).get();
     }
