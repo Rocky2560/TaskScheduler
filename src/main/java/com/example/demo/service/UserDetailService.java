@@ -41,4 +41,8 @@ public class UserDetailService implements UserDetailsService {
         Optional<Users> userOpt = userRepository.findByUsername(username);
         return userOpt.filter(user -> encoder.matches(rawPassword, user.getPassword()));
     }
+
+    public Optional<Users> findByUsername(String username) {
+        return Optional.of(userRepository.findByUsername(username).orElseThrow());
+    }
 }

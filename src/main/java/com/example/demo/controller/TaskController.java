@@ -5,7 +5,7 @@ import com.example.demo.Repository.UserRepository;
 import com.example.demo.model.Task;
 import com.example.demo.model.Users;
 import com.example.demo.service.TaskService;
-import com.example.demo.service.UserService;
+import com.example.demo.service.UserDetailService;
 import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -31,8 +31,8 @@ public class TaskController {
     @Autowired
     private UserRepository userRepository;
 
-//    @Autowired
-//    private UserService userService;
+    @Autowired
+    private UserDetailService userService;
 
     @Autowired
     private TaskNotificationScheduler taskNotificationScheduler;
@@ -46,18 +46,18 @@ public class TaskController {
     @GetMapping
     public String getAllTasks(Model model, Principal principal) throws MessagingException {
 
-//        String username = principal.getName(); // Get username from logged-in user
-//
-//        Optional<Users> optionalUser = userService.findByUsername(username);
-//        if (optionalUser.isPresent()) {
-//            Long userId = optionalUser.get().getId(); // Get the user ID
-//            List<Task> tasks = taskService.getTasksByUserId(userId);
-//            model.addAttribute("tasks", tasks != null ? tasks : new ArrayList<>());
-//        } else {
-//            model.addAttribute("tasks", new ArrayList<>());
-//        }
-        List<Task> tasks = taskService.getAllTasks();
-        model.addAttribute("tasks", tasks);
+        String username = principal.getName(); // Get username from logged-in user
+
+        Optional<Users> optionalUser = userService.findByUsername(username);
+        if (optionalUser.isPresent()) {
+            Long userId = optionalUser.get().getId(); // Get the user ID
+            List<Task> tasks = taskService.getTasksByUserId(userId);
+            model.addAttribute("tasks", tasks != null ? tasks : new ArrayList<>());
+        } else {
+            model.addAttribute("tasks", new ArrayList<>());
+        }
+//        List<Task> tasks = taskService.getAllTasks();
+//        model.addAttribute("tasks", tasks);
 //        taskNotificationScheduler.notifyPendingTasks();
         return "task-list";
     }
