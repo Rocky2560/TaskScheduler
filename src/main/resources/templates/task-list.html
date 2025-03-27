@@ -56,9 +56,10 @@
               (task.priority == 'MEDIUM' ? 'btn btn-sm btn-warning' : 'btn btn-sm btn-success')}"
           th:text="${task.priority}"/>
       </td>
-      <td th:text="${task.status}"><a th:class="${task.status == 'PENDING' ? 'btn btn-sm btn-warning' :
-              (task.status == 'COMPLETED' ? 'btn btn-sm btn-success')}"
-                                      th:text="${task.status}"/></td>
+      <td> <a th:class="${task.status.name() == 'PENDING' ? 'btn btn-sm btn-warning' :
+                  (task.status.name() == 'COMPLETED' ? 'btn btn-sm btn-success' : 'btn btn-sm btn-secondary')}"
+              th:text="${task.status}">
+      </a> </td>
       <td>
 <!--        <a th:href="@{/tasks/edit/{id}(id=${task.id})}" class="btn btn-warning btn-sm">Edit</a>-->
         <!-- Edit Button -->
