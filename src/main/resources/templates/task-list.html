@@ -52,9 +52,13 @@
       <td th:text="${task.title}"></td>
       <td th:text="${task.description}"></td>
       <td th:text="${task.dueDate}"></td>
-      <td class="btn btn-success btn-sm" th:text="${task.priority}">
+      <td><a th:class="${task.priority == 'HIGH' ? 'btn btn-sm btn-danger' :
+              (task.priority == 'MEDIUM' ? 'btn btn-sm btn-warning' : 'btn btn-sm btn-success')}"
+          th:text="${task.priority}"/>
       </td>
-      <td th:text="${task.status}"></td>
+      <td th:text="${task.status}"><a th:class="${task.status == 'PENDING' ? 'btn btn-sm btn-warning' :
+              (task.status == 'COMPLETED' ? 'btn btn-sm btn-success')}"
+                                      th:text="${task.status}"/></td>
       <td>
 <!--        <a th:href="@{/tasks/edit/{id}(id=${task.id})}" class="btn btn-warning btn-sm">Edit</a>-->
         <!-- Edit Button -->
