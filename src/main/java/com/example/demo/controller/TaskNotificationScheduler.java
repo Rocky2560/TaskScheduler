@@ -27,7 +27,7 @@ public class TaskNotificationScheduler {
     private EmailService emailService;
 
     // Cron expression: Every day at 8 AM
-    @Scheduled(cron = "0 1 0 * * ?")
+    @Scheduled(cron = "0 0 12 * * ?")
     public void notifyPendingTasks() throws MessagingException {
         List<Task> pendingTasks = taskRepository.findByStatus(TaskStatus.PENDING);
 
