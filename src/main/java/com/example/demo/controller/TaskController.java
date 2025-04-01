@@ -58,7 +58,7 @@ public class TaskController {
         }
 //        List<Task> tasks = taskService.getAllTasks();
 //        model.addAttribute("tasks", tasks);
-//        taskNotificationScheduler.notifyPendingTasks();
+        taskNotificationScheduler.notifyPendingTasks();
         return "task-list";
     }
 
